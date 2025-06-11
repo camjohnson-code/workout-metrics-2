@@ -1,7 +1,10 @@
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Sparkles } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const CTA = () => {
+  const navigate = useNavigate();
+
   return (
     <section className='py-20 bg-gradient-to-br from-blue-600 via-purple-600 to-blue-800 relative overflow-hidden'>
       <div className='absolute inset-0 bg-black/20'></div>
@@ -32,6 +35,7 @@ const CTA = () => {
             <Button
               size='lg'
               className='bg-teal-400 text-blue-900 hover:bg-teal-300 px-8 py-6 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 font-semibold cursor-pointer'
+              onClick={() => navigate('/login')}
             >
               Get Started Free
               <ArrowRight className='ml-2 h-5 w-5' />
