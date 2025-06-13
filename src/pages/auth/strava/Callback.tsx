@@ -20,7 +20,7 @@ const Callback = () => {
       }
 
       // If successful, redirect to dashboard
-      navigate('/dashboard');
+      navigate('/auth/strava/downloading-activities');
     };
 
     processCallback();
