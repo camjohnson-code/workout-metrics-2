@@ -10,8 +10,6 @@ import {
 } from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useState, useEffect } from 'react';
-import { DiscAlbum } from 'lucide-react';
-
 const Heatmaps = () => {
   const [isLoading, setIsLoading] = useState(true);
 
