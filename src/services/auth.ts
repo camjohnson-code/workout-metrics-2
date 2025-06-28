@@ -99,8 +99,8 @@ export const processStravaCallback = async (
     });
 
     if (saveTokenResponse.ok) {
-      const response = await saveTokenResponse.json();
-      console.log('response', response);
+      const tokenSaveResult = await saveTokenResponse.json();
+      console.log('response', tokenSaveResult);
     }
 
     if (!saveTokenResponse.ok) {
