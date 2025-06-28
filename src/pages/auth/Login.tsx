@@ -20,15 +20,11 @@ const Login = () => {
         throw new Error('Missing required environment variables');
       }
 
-      // Generate and store state
-      const state = crypto.randomUUID();
-      localStorage.setItem('oauth_state', state);
-
       const responseType = 'code';
       const approvalPrompt = 'auto';
-      const scope = 'activity:write,read';
+      const scope = 'activity:read_all,activity:write';
 
-      const authorizationUrl = `https://www.strava.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=${responseType}&approval_prompt=${approvalPrompt}&scope=${scope}&state=${state}`;
+      const authorizationUrl = `https://www.strava.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=${responseType}&approval_prompt=${approvalPrompt}&scope=${scope}`;
 
       window.location.href = authorizationUrl;
     } catch (error) {
