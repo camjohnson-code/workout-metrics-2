@@ -35,9 +35,7 @@ interface StravaTokenResponse {
   };
 }
 
-export const processStravaCallback = async (
-  navigate: NavigateFunction
-): Promise<CallbackResult> => {
+export const processStravaCallback = async (): Promise<CallbackResult> => {
   try {
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('code');
