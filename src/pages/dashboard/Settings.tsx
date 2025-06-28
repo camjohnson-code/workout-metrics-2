@@ -7,8 +7,18 @@ import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Separator } from '@/components/ui/separator';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useState, useEffect } from 'react';
 
 const Settings = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+  }, []);
+
   return (
     <DashboardLayout>
       <div className='space-y-6'>
@@ -35,28 +45,54 @@ const Settings = () => {
                 <div className='grid gap-4 md:grid-cols-2'>
                   <div className='space-y-2'>
                     <Label htmlFor='firstName'>First Name</Label>
-                    <Input id='firstName' placeholder='John' />
+                    {isLoading ? (
+                      <Skeleton className='h-10 w-full' />
+                    ) : (
+                      <Input id='firstName' placeholder='John' />
+                    )}
                   </div>
                   <div className='space-y-2'>
                     <Label htmlFor='lastName'>Last Name</Label>
-                    <Input id='lastName' placeholder='Doe' />
+                    {isLoading ? (
+                      <Skeleton className='h-10 w-full' />
+                    ) : (
+                      <Input id='lastName' placeholder='Doe' />
+                    )}
                   </div>
                 </div>
                 <div className='space-y-2'>
                   <Label htmlFor='email'>Email</Label>
-                  <Input id='email' type='email' placeholder='john@example.com' />
+                  {isLoading ? (
+                    <Skeleton className='h-10 w-full' />
+                  ) : (
+                    <Input id='email' type='email' placeholder='john@example.com' />
+                  )}
                 </div>
                 <div className='grid gap-4 md:grid-cols-2'>
                   <div className='space-y-2'>
                     <Label htmlFor='weight'>Weight (lbs)</Label>
-                    <Input id='weight' type='number' placeholder='150' />
+                    {isLoading ? (
+                      <Skeleton className='h-10 w-full' />
+                    ) : (
+                      <Input id='weight' type='number' placeholder='150' />
+                    )}
                   </div>
                   <div className='space-y-2'>
                     <Label htmlFor='age'>Age</Label>
-                    <Input id='age' type='number' placeholder='25' />
+                    {isLoading ? (
+                      <Skeleton className='h-10 w-full' />
+                    ) : (
+                      <Input id='age' type='number' placeholder='25' />
+                    )}
                   </div>
                 </div>
-                <Button>Save Changes</Button>
+
+                <Button
+                  disabled={isLoading}
+                  className={isLoading ? 'cursor-not-allowed' : 'cursor-pointer'}
+                >
+                  Save Changes
+                </Button>
               </CardContent>
             </Card>
           </TabsContent>
@@ -73,44 +109,37 @@ const Settings = () => {
                     <Label>Dark Mode</Label>
                     <p className='text-sm text-muted-foreground'>Toggle dark mode theme</p>
                   </div>
-                  <Switch />
+                  {isLoading ? <Skeleton className='h-6 w-11' /> : <Switch />}
                 </div>
 
                 <Separator />
 
                 <div className='space-y-3'>
                   <Label>Units</Label>
-                  <RadioGroup defaultValue='imperial' className='grid grid-cols-2 gap-4'>
-                    <div className='flex items-center space-x-2'>
-                      <RadioGroupItem value='imperial' id='imperial' />
-                      <Label htmlFor='imperial'>Imperial (miles, lbs)</Label>
+                  {isLoading ? (
+                    <div className='grid grid-cols-2 gap-4'>
+                      <Skeleton className='h-4 w-32' />
+                      <Skeleton className='h-4 w-24' />
                     </div>
-                    <div className='flex items-center space-x-2'>
-                      <RadioGroupItem value='metric' id='metric' />
-                      <Label htmlFor='metric'>Metric (km, kg)</Label>
-                    </div>
-                  </RadioGroup>
+                  ) : (
+                    <RadioGroup defaultValue='imperial' className='grid grid-cols-2 gap-4'>
+                      <div className='flex items-center space-x-2'>
+                        <RadioGroupItem value='imperial' id='imperial' />
+                        <Label htmlFor='imperial'>Imperial (miles, lbs)</Label>
+                      </div>
+                      <div className='flex items-center space-x-2'>
+                        <RadioGroupItem value='metric' id='metric' />
+                        <Label htmlFor='metric'>Metric (km, kg)</Label>
+                      </div>
+                    </RadioGroup>
+                  )}
                 </div>
-
-                <Separator />
-
-                <div className='flex items-center justify-between'>
-                  <div className='space-y-0.5'>
-                    <Label>Email Notifications</Label>
-                    <p className='text-sm text-muted-foreground'>Receive weekly progress reports</p>
-                  </div>
-                  <Switch defaultChecked />
-                </div>
-
-                <div className='flex items-center justify-between'>
-                  <div className='space-y-0.5'>
-                    <Label>Push Notifications</Label>
-                    <p className='text-sm text-muted-foreground'>Get reminders and achievements</p>
-                  </div>
-                  <Switch defaultChecked />
-                </div>
-
-                <Button>Save Preferences</Button>
+                <Button
+                  disabled={isLoading}
+                  className={isLoading ? 'cursor-not-allowed' : 'cursor-pointer'}
+                >
+                  Save Preferences
+                </Button>
               </CardContent>
             </Card>
           </TabsContent>
@@ -118,49 +147,19 @@ const Settings = () => {
           <TabsContent value='privacy' className='space-y-4'>
             <Card>
               <CardHeader>
-                <CardTitle>Privacy Settings</CardTitle>
-                <CardDescription>Control your data and privacy</CardDescription>
+                <CardTitle>Data Export</CardTitle>
+                <CardDescription>Download a copy of all your data</CardDescription>
               </CardHeader>
               <CardContent className='space-y-6'>
-                <div className='flex items-center justify-between'>
-                  <div className='space-y-0.5'>
-                    <Label>Profile Visibility</Label>
-                    <p className='text-sm text-muted-foreground'>
-                      Make your profile visible to other users
-                    </p>
-                  </div>
-                  <Switch />
-                </div>
-
-                <div className='flex items-center justify-between'>
-                  <div className='space-y-0.5'>
-                    <Label>Activity Sharing</Label>
-                    <p className='text-sm text-muted-foreground'>
-                      Allow others to see your activities
-                    </p>
-                  </div>
-                  <Switch />
-                </div>
-
-                <div className='flex items-center justify-between'>
-                  <div className='space-y-0.5'>
-                    <Label>Data Analytics</Label>
-                    <p className='text-sm text-muted-foreground'>
-                      Help improve the app with anonymous usage data
-                    </p>
-                  </div>
-                  <Switch defaultChecked />
-                </div>
-
-                <Separator />
-
                 <div className='space-y-4'>
-                  <h4 className='font-medium'>Data Export</h4>
-                  <p className='text-sm text-muted-foreground'>Download a copy of all your data</p>
-                  <Button variant='outline'>Export Data</Button>
+                  <Button
+                    disabled={isLoading}
+                    className={isLoading ? 'cursor-not-allowed' : 'cursor-pointer'}
+                    variant='outline'
+                  >
+                    Export Data
+                  </Button>
                 </div>
-
-                <Button>Save Privacy Settings</Button>
               </CardContent>
             </Card>
           </TabsContent>
@@ -173,56 +172,45 @@ const Settings = () => {
               </CardHeader>
               <CardContent className='space-y-6'>
                 <div className='space-y-4'>
-                  <h4 className='font-medium'>Change Password</h4>
-                  <div className='space-y-2'>
-                    <Label htmlFor='currentPassword'>Current Password</Label>
-                    <Input id='currentPassword' type='password' />
-                  </div>
-                  <div className='space-y-2'>
-                    <Label htmlFor='newPassword'>New Password</Label>
-                    <Input id='newPassword' type='password' />
-                  </div>
-                  <div className='space-y-2'>
-                    <Label htmlFor='confirmPassword'>Confirm New Password</Label>
-                    <Input id='confirmPassword' type='password' />
-                  </div>
-                  <Button>Update Password</Button>
-                </div>
-
-                <Separator />
-
-                <div className='space-y-4'>
                   <h4 className='font-medium'>Connected Accounts</h4>
-                  <div className='flex items-center justify-between p-3 border rounded-lg'>
-                    <div className='flex items-center space-x-3'>
-                      <div className='w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center'>
-                        <span className='text-white text-sm font-bold'>S</span>
+                  {isLoading ? (
+                    <Skeleton className='h-16 w-full' />
+                  ) : (
+                    <div className='flex items-center justify-between p-3 border rounded-lg'>
+                      <div className='flex items-center space-x-3'>
+                        <div className='w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center'>
+                          <span className='text-white text-sm font-bold'>S</span>
+                        </div>
+                        <div>
+                          <p className='font-medium'>Strava</p>
+                          <p className='text-sm text-muted-foreground'>Connected</p>
+                        </div>
                       </div>
-                      <div>
-                        <p className='font-medium'>Strava</p>
-                        <p className='text-sm text-muted-foreground'>Connected</p>
-                      </div>
+                      <Button variant='outline' size='sm'>
+                        Disconnect
+                      </Button>
                     </div>
-                    <Button variant='outline' size='sm'>
-                      Disconnect
-                    </Button>
-                  </div>
+                  )}
                 </div>
 
                 <Separator />
 
                 <div className='space-y-4'>
                   <h4 className='font-medium text-red-600'>Danger Zone</h4>
-                  <div className='p-4 border border-red-200 rounded-lg bg-red-50'>
-                    <h5 className='font-medium text-red-800'>Delete Account</h5>
-                    <p className='text-sm text-red-700 mt-1'>
-                      Permanently delete your account and all associated data. This action cannot be
-                      undone.
-                    </p>
-                    <Button variant='destructive' className='mt-3'>
-                      Delete Account
-                    </Button>
-                  </div>
+                  {isLoading ? (
+                    <Skeleton className='h-24 w-full' />
+                  ) : (
+                    <div className='p-4 border border-red-200 rounded-lg bg-red-50'>
+                      <h5 className='font-medium text-red-800'>Delete Account</h5>
+                      <p className='text-sm text-red-700 mt-1'>
+                        Permanently delete your account and all associated data. This action cannot
+                        be undone.
+                      </p>
+                      <Button variant='destructive' className='mt-3'>
+                        Delete Account
+                      </Button>
+                    </div>
+                  )}
                 </div>
               </CardContent>
             </Card>
