@@ -39,7 +39,11 @@ const DownloadingStravaActivities = ({
           }
         } catch (error) {
           setError('Failed to fetch activities');
+        } finally {
+          setIsLoading(false);
         }
+      } else {
+        setIsLoading(false);
       }
     };
 
