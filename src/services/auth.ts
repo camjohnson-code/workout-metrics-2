@@ -35,7 +35,9 @@ interface StravaTokenResponse {
   };
 }
 
-export const handleStravaCallback = async (navigate: NavigateFunction): Promise<CallbackResult> => {
+export const processStravaCallback = async (
+  navigate: NavigateFunction
+): Promise<CallbackResult> => {
   try {
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('code');
@@ -80,8 +82,35 @@ export const handleStravaCallback = async (navigate: NavigateFunction): Promise<
 
     const data: StravaTokenResponse = await response.json();
 
+    console.log('received response', data);
+
+    // Save tokens to strava_tokens table
+    const saveTokenResponse = await fetch(`${import.meta.env.VITE_API_SAVE_TOKENS}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        access_token: data.access_token,
+        refresh_token: data.refresh_token,
+        expires_at: data.expires_at,
+        athlete: data.athlete,
+      }),
+    });
+
+    if (saveTokenResponse.ok) {
+      const response = await saveTokenResponse.json();
+      console.log('response', response);
+    }
+
+    if (!saveTokenResponse.ok) {
+      const errorData = await saveTokenResponse.json();
+      console.error('Failed to save tokens:', errorData);
+      throw new Error('Failed to save tokens to database');
+    }
+
     // Save user data to backend/Supabase
-    const saveUserResponse = await fetch(import.meta.env.VITE_BACKEND_API_URL, {
+    const saveUserResponse = await fetch(`${import.meta.env.VITE_API_SAVE_USER}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -103,5 +132,25 @@ export const handleStravaCallback = async (navigate: NavigateFunction): Promise<
     const errorMessage = err instanceof Error ? err.message : 'Authentication failed';
     navigate('/login', { state: { error: errorMessage } });
     return { success: false, error: errorMessage };
+  }
+};
+
+export const getStravaActivities = async (userId: string) => {
+  try {
+    const response = await fetch(`${import.meta.env.VITE_API_FETCH_ACTIVITIES}?userId=${userId}`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'Failed to fetch activities');
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching activities:', error);
+    throw error;
   }
 };
