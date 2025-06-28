@@ -7,8 +7,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useState, useEffect } from 'react';
 
 const Charts = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+  }, []);
+
   return (
     <DashboardLayout>
       <div className='space-y-6'>
@@ -19,7 +29,7 @@ const Charts = () => {
               Visualize your fitness data with interactive charts
             </p>
           </div>
-          <Select defaultValue='last30'>
+          <Select disabled={isLoading} defaultValue='last30'>
             <SelectTrigger className='w-[180px]'>
               <SelectValue placeholder='Select time range' />
             </SelectTrigger>
@@ -39,11 +49,15 @@ const Charts = () => {
               <CardDescription>Track your distance progress</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className='h-[300px] flex items-center justify-center bg-gray-50 rounded-lg'>
-                <p className='text-muted-foreground'>
-                  Distance over time chart will be displayed here
-                </p>
-              </div>
+              {isLoading ? (
+                <Skeleton className='h-[300px] w-full' />
+              ) : (
+                <div className='h-[300px] flex items-center justify-center bg-gray-50 rounded-lg'>
+                  <p className='text-muted-foreground'>
+                    Distance over time chart will be displayed here
+                  </p>
+                </div>
+              )}
             </CardContent>
           </Card>
 
@@ -54,9 +68,15 @@ const Charts = () => {
                 <CardDescription>Breakdown by activity type</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className='h-[250px] flex items-center justify-center bg-gray-50 rounded-lg'>
-                  <p className='text-muted-foreground'>Activity pie chart will be displayed here</p>
-                </div>
+                {isLoading ? (
+                  <Skeleton className='h-[250px] w-full' />
+                ) : (
+                  <div className='h-[250px] flex items-center justify-center bg-gray-50 rounded-lg'>
+                    <p className='text-muted-foreground'>
+                      Activity pie chart will be displayed here
+                    </p>
+                  </div>
+                )}
               </CardContent>
             </Card>
 
@@ -66,11 +86,15 @@ const Charts = () => {
                 <CardDescription>Training load by week</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className='h-[250px] flex items-center justify-center bg-gray-50 rounded-lg'>
-                  <p className='text-muted-foreground'>
-                    Weekly volume bar chart will be displayed here
-                  </p>
-                </div>
+                {isLoading ? (
+                  <Skeleton className='h-[250px] w-full' />
+                ) : (
+                  <div className='h-[250px] flex items-center justify-center bg-gray-50 rounded-lg'>
+                    <p className='text-muted-foreground'>
+                      Weekly volume bar chart will be displayed here
+                    </p>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </div>
@@ -81,11 +105,15 @@ const Charts = () => {
               <CardDescription>Elevation gain across activities</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className='h-[300px] flex items-center justify-center bg-gray-50 rounded-lg'>
-                <p className='text-muted-foreground'>
-                  Elevation profile chart will be displayed here
-                </p>
-              </div>
+              {isLoading ? (
+                <Skeleton className='h-[300px] w-full' />
+              ) : (
+                <div className='h-[300px] flex items-center justify-center bg-gray-50 rounded-lg'>
+                  <p className='text-muted-foreground'>
+                    Elevation profile chart will be displayed here
+                  </p>
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>
